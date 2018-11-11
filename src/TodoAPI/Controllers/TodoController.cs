@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TodoAPI.Models;
 
@@ -28,9 +29,9 @@ namespace TodoAPI.Controllers
         [HttpGet]
         public ActionResult<List<TodoItem>> GetAll()
         {
-            return _context.TodoItems.ToList();
+            return _context.TodoItems.OrderBy(x => x.Id).ToList();
         }
-        
+
         [HttpGet("{id}", Name = "GetTodo")]
         public ActionResult<TodoItem> GetById(long id)
         {
@@ -79,6 +80,22 @@ namespace TodoAPI.Controllers
             }
 
             _context.TodoItems.Remove(todo);
+            _context.SaveChanges();
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public IActionResult Patch(long id, [FromBody] JsonPatchDocument<TodoItem> item)
+        {
+            var todo = _context.TodoItems.Find(id);
+            if (todo == null)
+            {
+                return NotFound();
+            }
+
+            item.ApplyTo(todo);
+
+            _context.TodoItems.Update(todo);
             _context.SaveChanges();
             return NoContent();
         }
