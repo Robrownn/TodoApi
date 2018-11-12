@@ -21,16 +21,13 @@ namespace TodoAPI.Controllers
 
             if (_context.TodoItems.Count() == 0)
             {
-                _context.TodoItems.Add(new TodoItem { Name = "Item1" });
+                _context.TodoItems.Add(entity: new TodoItem { Name = "Item1" });
                 _context.SaveChanges();
             }
         }
 
         [HttpGet]
-        public ActionResult<List<TodoItem>> GetAll()
-        {
-            return _context.TodoItems.OrderBy(x => x.Id).ToList();
-        }
+        public ActionResult<List<TodoItem>> GetAll() => _context.TodoItems.OrderBy(x => x.Id).ToList();
 
         [HttpGet("{id}", Name = "GetTodo")]
         public ActionResult<TodoItem> GetById(long id)
