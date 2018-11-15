@@ -11,22 +11,15 @@ before_build:
 build_script:
   - cmd: dotnet publish ./src/TodoAPI/TodoAPI.csproj
 artifacts:
-  - path: 'src\TodoAPI\bin\Debug\netcoreapp2.1\publish'
-    name: Robrownn-TodoAPI
-    type: WebDeployPackage
+- path: src\TodoAPI\bin\Debug\netcoreapp2.1\publish
+  name: Robrownn-TodoAPI
+
 clone_depth: 1
 deploy:
-
 - provider: AzureAppServiceZipDeploy
-
   appservice_environment: false
-
   website: https://robrownntodoapi
-
   username: RobrownnTodoAPI\robrownn
-
   password:
-
     secure: oOYhtmDObxBmcDxmZZ2yig==
-
   artifact: Robrownn-TodoAPI
