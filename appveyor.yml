@@ -7,9 +7,9 @@ init:
   - cmd: git config --global core.autocrlf true
 before_build:
   - cmd: dotnet --version
-  - cmd: dotnet restore .src/TodoAPI/TodoAPI.csproj --verbosity m
+  - cmd: dotnet restore ./src/TodoAPI/TodoAPI.csproj --verbosity m
 build_script:
-  - cmd: dotnet publish .src/TodoAPI/TodoAPI.csproj
+  - cmd: dotnet publish ./src/TodoAPI/TodoAPI.csproj
 artifacts:
   - path: 'src\TodoAPI\bin\Debug\netcoreapp2.1\publish'
     name: Robrownn-TodoAPI
