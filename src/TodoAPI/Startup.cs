@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TodoAPI.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace TodoAPI
 {
@@ -26,6 +27,15 @@ namespace TodoAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = "https://robrownn.auth0.com/";
+                options.Audience = "https://robrownn-todo/api";
+            });
             services.AddCors();
             services.AddDbContext<TodoContext>(opt =>
                 opt.UseInMemoryDatabase("TodoList"));
@@ -48,6 +58,9 @@ namespace TodoAPI
                 builder.WithOrigins("http://localhost:8000")
                        .AllowAnyHeader()
                        .AllowAnyMethod());
+
+            app.UseAuthentication();
+
             app.UseMvc();
         }
     }
