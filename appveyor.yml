@@ -19,7 +19,7 @@ deploy:
 - provider: AzureAppServiceZipDeploy
   appservice_environment: false
   website: robrownntodoapi
-  username: RobrownnTodoAPI\robrownn
+  username: robrownn
   password:
     secure: oOYhtmDObxBmcDxmZZ2yig==
   artifact: Robrownn-TodoAPI
