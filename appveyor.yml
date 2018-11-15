@@ -18,7 +18,7 @@ clone_depth: 1
 deploy:
 - provider: AzureAppServiceZipDeploy
   appservice_environment: false
-  website: https://robrownntodoapi
+  website: robrownntodoapi
   username: RobrownnTodoAPI\robrownn
   password:
     secure: oOYhtmDObxBmcDxmZZ2yig==
