@@ -64,6 +64,20 @@ namespace TodoAPI
             {
                 settings.GeneratorSettings.DefaultPropertyNameHandling =
                     PropertyNameHandling.CamelCase;
+
+                settings.PostProcess = document =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "Todo API";
+                    document.Info.Description = "A simple ASP.NET Core Web API";
+                    document.Info.TermsOfService = "None";
+                    document.Info.Contact = new NSwag.SwaggerContact
+                    {
+                        Name = "Robert Brown",
+                        Email = "robrownn@gmail.com",
+                        Url = "https://twitter.com/vaaroth"
+                    };
+                };
             });
 
             app.UseCors(builder =>
