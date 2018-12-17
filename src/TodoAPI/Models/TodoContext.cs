@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using TodoAPI.Entities;
 
 namespace TodoAPI.Models
 {
@@ -13,6 +10,7 @@ namespace TodoAPI.Models
         {
         }
 
+        public DbSet<User> Users { get; set; }
         public DbSet<TodoItem> TodoItems { get; set; }
     }
 }
