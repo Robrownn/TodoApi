@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TodoAPI.Models;
+using TodoAPI.Entities;
 
 namespace TodoAPI.Controllers
 {
