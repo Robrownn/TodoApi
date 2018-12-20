@@ -83,7 +83,7 @@ namespace TodoAPI.Controllers
                 _userService.Create(user, userDto.Password);
                 return Ok();
             }
-            catch(Exception ex)
+            catch(AppException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
@@ -95,6 +95,23 @@ namespace TodoAPI.Controllers
             var users = _userService.GetAll();
             var userDtos = _mapper.Map<IList<UserDto>>(users);
             return Ok(userDtos);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody]UserDto userDto)
+        {
+            var user = _mapper.Map<User>(userDto);
+            user.Id = id;
+
+            try
+            {
+                _userService.Update(user, userDto.Password);
+                return Ok();
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }
