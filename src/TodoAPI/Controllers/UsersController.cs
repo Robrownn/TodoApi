@@ -83,7 +83,7 @@ namespace TodoAPI.Controllers
                 _userService.Create(user, userDto.Password);
                 return Ok();
             }
-            catch(AppException ex)
+            catch (AppException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
@@ -112,6 +112,13 @@ namespace TodoAPI.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _userService.Delete(id);
+            return Ok();
         }
     }
 }
