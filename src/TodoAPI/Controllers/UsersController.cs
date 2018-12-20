@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TodoAPI.Dtos;
+using TodoAPI.Entities;
 using TodoAPI.Helpers;
 using TodoAPI.Services;
 
@@ -69,6 +70,23 @@ namespace TodoAPI.Controllers
                 user.LastName,
                 Token = tokenString
             });
+        }
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public IActionResult Register([FromBody]UserDto userDto)
+        {
+            var user = _mapper.Map<User>(userDto);
+
+            try
+            {
+                _userService.Create(user, userDto.Password);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }
