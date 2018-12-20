@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using TodoAPI.Models;
 using TodoAPI.Entities;
+using TodoAPI.Services;
 
 namespace TodoAPI.Controllers
 {
@@ -16,26 +13,20 @@ namespace TodoAPI.Controllers
     [ApiController]
     public class TodoController : ControllerBase
     {
-        private readonly TodoContext _context;
+        private ITodoService _todoService;
 
-        public TodoController(TodoContext context)
+        public TodoController(ITodoService todoService)
         {
-            _context = context;
-
-            if (_context.TodoItems.Count() == 0)
-            {
-                _context.TodoItems.Add(entity: new TodoItem { Name = "Item1" });
-                _context.SaveChanges();
-            }
+            _todoService = todoService;
         }
 
         [HttpGet]
-        public ActionResult<List<TodoItem>> GetAll() => _context.TodoItems.OrderBy(x => x.Id).ToList();
+        public ActionResult<List<TodoItem>> GetAll() => _todoService.GetAll().ToList();
 
         [HttpGet("{id}", Name = "GetTodo")]
         public ActionResult<TodoItem> GetById(long id)
         {
-            var item = _context.TodoItems.Find(id);
+            var item = _todoService.GetById(id);
             if (item == null)
             {
                 return NotFound();
@@ -47,8 +38,7 @@ namespace TodoAPI.Controllers
         [HttpPost]
         public IActionResult Create(TodoItem item)
         {
-            _context.TodoItems.Add(item);
-            _context.SaveChanges();
+            _todoService.Create(item);
 
             return CreatedAtRoute("GetTodo", new { id = item.Id }, item);
         }
@@ -56,7 +46,7 @@ namespace TodoAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(long id, TodoItem item)
         {
-            var todo = _context.TodoItems.Find(id);
+            var todo = _todoService.GetById(id);
             if (todo == null)
             {
                 return NotFound();
@@ -65,29 +55,27 @@ namespace TodoAPI.Controllers
             todo.IsComplete = item.IsComplete;
             todo.Name = item.Name;
 
-            _context.TodoItems.Update(todo);
-            _context.SaveChanges();
+            _todoService.Update(todo);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            var todo = _context.TodoItems.Find(id);
+            var todo = _todoService.GetById(id);
             if (todo == null)
             {
                 return NotFound();
             }
 
-            _context.TodoItems.Remove(todo);
-            _context.SaveChanges();
+            _todoService.Delete(todo);
             return NoContent();
         }
 
         [HttpPatch("{id}")]
         public IActionResult Patch(long id, [FromBody] JsonPatchDocument<TodoItem> item)
         {
-            var todo = _context.TodoItems.Find(id);
+            var todo = _todoService.GetById(id);
             if (todo == null)
             {
                 return NotFound();
@@ -95,8 +83,7 @@ namespace TodoAPI.Controllers
 
             item.ApplyTo(todo);
 
-            _context.TodoItems.Update(todo);
-            _context.SaveChanges();
+            _todoService.Update(todo);
             return NoContent();
         }
     }

@@ -9,9 +9,9 @@ namespace TodoAPI.Services
     public interface ITodoService
     {
         IEnumerable<TodoItem> GetAll();
-        TodoItem GetById(int id);
+        TodoItem GetById(long id);
         TodoItem Create(TodoItem item);
         void Update(TodoItem item);
-        void Delete(int id);
+        void Delete(TodoItem item);
     }
 }
