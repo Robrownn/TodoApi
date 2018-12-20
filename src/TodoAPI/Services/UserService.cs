@@ -11,6 +11,7 @@ namespace TodoAPI.Services
     public class UserService : IUserService
     {
         private TodoContext _context;
+
         public UserService(TodoContext context)
         {
             _context = context;
